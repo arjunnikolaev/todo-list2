@@ -1,8 +1,9 @@
-import {todoStore} from '../stores/TodoStore';
 import React, {FormEvent, useCallback, useState} from 'react';
 import {Button, TextField} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {observer} from 'mobx-react';
+
+import {todoStore} from '../stores/TodoStore';
 
 export const AddTodo = observer(() => {
   const styles = useStyles();
@@ -29,7 +30,7 @@ export const AddTodo = observer(() => {
         />
         <Button disabled={!text} className={styles.btn} color="primary" type="submit">Add Todo</Button>
         {!!todoStore.todos.length && (
-          <Button className={styles.btn} color="secondary" onClick={() => todoStore.clearTodos()}>Clear todos</Button>
+          <Button className={styles.btn} color="secondary" onClick={todoStore.clearTodos}>Clear todos</Button>
         )}
       </form>
     </div>
@@ -39,12 +40,12 @@ export const AddTodo = observer(() => {
 const useStyles = makeStyles({
   form: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   btn: {
-    flexGrow: 1,
+    marginLeft: 20,
   },
   input: {
-    flexGrow: 2,
+    width: 300,
   }
 });

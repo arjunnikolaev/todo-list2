@@ -1,10 +1,16 @@
 import {makeAutoObservable} from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
 
-interface ITodo {
+export interface ITodo {
   text: string;
   id: string;
-  completed: boolean;
+  status: Status;
+}
+
+export enum Status {
+  New = 'New',
+  InProgress = 'InProgress',
+  Done = 'Done',
 }
 
 class TodoStore {
@@ -18,18 +24,24 @@ class TodoStore {
     this.todos.push({
       text,
       id: uuidv4(),
-      completed: false,
+      status: Status.New,
     });
     this.saveToStorage();
   };
 
-  toggleTodo = (todo: ITodo) => {
-    todo.completed = !todo.completed;
+  setTodoStatus = (todo: ITodo, status: Status) => {
+    todo.status = status;
     this.saveToStorage();
   };
 
   clearTodos = () => {
     this.todos = [];
+    this.saveToStorage();
+  };
+
+  deleteTodo = (id: string) => {
+    const idx = this.todos.findIndex((t) => t.id === id);
+    if (idx !== -1) this.todos.splice(idx, 1);
     this.saveToStorage();
   };
 
